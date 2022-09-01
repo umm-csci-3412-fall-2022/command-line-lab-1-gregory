@@ -1,4 +1,4 @@
-tmpfile=
+
 #############################
 # 
 #
@@ -10,14 +10,23 @@ tmpfile=
 #
 #############################
 create_scratch_directory() {
-    filename=${$1%.tgz}_clean
-    tmpfile=(mktemp -d filename)
-    echo $filename
+    name=$1
+    tmpfile=$(mktemp -d)
+    tar -xzvf "$name" -C "${tmpfile}"
+    cd "${tmpfile}"
 }
 
-extract_files() {
-    echo "extracting files"
+find_and_delete_files() {
+    delfiles=$(grep -lr "DELETE ME" *)
+    for f in ${delfiles}; do
+	rm "$f"
+    done
 }
 
-create_scratch_directory $1
-extract_files
+recompress_to_tgz() {
+    tar -cvzf cleaned_"${name}" "$(pwd)"
+}
+
+create_scratch_directory "$1"
+find_and_delete_files
+recompress_to_tgz
