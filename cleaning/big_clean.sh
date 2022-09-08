@@ -12,7 +12,7 @@
 create_scratch_directory() {
     name=$1
     tmpfile=$(mktemp -d)
-    tar -xzvf "$name" -C "${tmpfile}"
+    tar -xzvf "$name" -C "$tmpfile"
     cd "${tmpfile}"
 }
 
