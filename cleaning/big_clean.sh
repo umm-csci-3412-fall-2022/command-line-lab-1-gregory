@@ -25,7 +25,7 @@ find_and_delete_files() {
 }
 
 recompress_to_tgz(){
-    tar -czvf cleaned_$name little_dir
+    tar -czvf cleaned_$name ${name::-4}
     mv cleaned_$name $scriptloc
 }
 
