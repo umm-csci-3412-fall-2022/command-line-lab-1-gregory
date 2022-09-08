@@ -10,10 +10,11 @@
 #
 #############################
 create_scratch_directory() {
+    scriptloc="$(pwd)"
     name=$1
     tmpfile=$(mktemp -d)
-    tar -xzvf "$name" -C "$tmpfile"
-    cd "${tmpfile}"
+    uncompressed=$(tar -xzvf $name -C $tmpfile)
+    cd $tmpfile
 }
 
 find_and_delete_files() {
@@ -23,10 +24,11 @@ find_and_delete_files() {
     done
 }
 
-recompress_to_tgz() {
-    tar -cvzf cleaned_"${name}" "$(pwd)"
+recompress_to_tgz(){
+    tar -czvf cleaned_$name little_dir
+    mv cleaned_$name $scriptloc
 }
 
 create_scratch_directory "$1"
 find_and_delete_files
-recompress_to_tgz
+recompress_to_tgz "$1"
